@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import Main from './Components/Main/Main';
+import FilteredProducts from './Components/FilteredProducts/FilteredProducts';
+import SingleProduct from './Components/FilteredProducts/SingleProduct';
+import Login from './Components/Login/Login';
+import { useSelector } from 'react-redux';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
+  const user = useSelector((state) => state.user.user);
+  const { authUser } = user;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={authUser ? <Main></Main> : <Login></Login>}
+          ></Route>
+          <Route path='/' element={<Main />}></Route>
+          <Route path='/filteredProducts/:type' element={<FilteredProducts />}></Route>
+          <Route path='/filteredProducts/:type/:id' element={<SingleProduct />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
